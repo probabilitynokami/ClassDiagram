@@ -1,14 +1,30 @@
 ```mermaid
 classDiagram
-    class Player{
+
+    class IPlayer{
+        + readonly ID
+        + readonly userName
+    }
+    class LudoPlayer{
         - Totem[] totem
         - Path path
         + Totem GetTotem(id)
         + GetPath()
-        * Move()
+        * MakeMove()
     }
-    class HumanPlayer{
-        + DecideMove()
+    class HumanLudoPlayer{
+    }
+
+    class Totem{
+        - Position _position
+        - Position _homePosition
+        - IPlayer _owner
+
+        + Totem()
+        + Move()
+        + ReturnHome()
+        + GetPosition()
+        + GetOwner()
     }
 
 
@@ -32,7 +48,7 @@ classDiagram
     }
 
     class Rule{
-        * bool Check(Player, Cell)
+        * bool Check(Totem, Cell)
     }
     class RuleBlocking{
 
@@ -63,14 +79,44 @@ classDiagram
     RuleBlocking  --|> Rule
     RuleOwnership --|> Rule
 
+    IPlayer <|.. LudoPlayer
+    LudoPlayer <|-- HumanLudoPlayer
 
-    Player <|-- HumanPlayer
+    LudoPlayer *-- Totem
+    Totem *-- IPlayer
 
-    GameController *-- Player
+    GameController *-- LudoPlayer
     GameController *-- Board
     GameController *-- Rule
     GameController *-- Die
 
     Board *-- Cell
+
+```
+
+---
+
+---
+
+```mermaid
+classDiagram
+
+class GameEngine{
+    Stack~Game~ gameStates
+    + Run()
+    + Loop()
+}
+
+class Game{
+    +Update()
+}
+
+class LudoGame{
+    +Context
+}
+
+
+
+Game <|-- LudoGame
 
 ```
