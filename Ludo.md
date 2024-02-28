@@ -92,10 +92,12 @@ classDiagram
             + void CommitScene()
             + void GetCurrentScene()
         }
+
         class GameEngine{
-            - Stack~IScene~ _sceneQueue
+            # Stack~IScene~ _sceneQueue
             + void Run()
-            - void Loop()
+            # void Loop()
+            # void Render()
         }
         class IScene{
             <<interface>>
@@ -106,11 +108,37 @@ classDiagram
             <<interface>>
             + T GetContext()
         }
+
+        class IRenderable{
+            <<interface>>
+            + void Draw()
+        }
+        class ConsoleRenderable{
+            + ConsoleRenderable()
+        }
+        class RenderSystem_T_{
+            <<static>>
+            +List~T~ Renderables
+            +RegisterRenderable(T)
+        }
+        class RenderSystem_ConsoleRenderable_{
+        }
+
+        class ConsoleGameEngine{
+        }
     }
 
     ISceneManager -- IScene
     GameEngine --|> ISceneManager
     GameEngine o-- IScene
+    ConsoleRenderable --|> IRenderable
+    RenderSystem_ConsoleRenderable_ ..|> RenderSystem_T_ : bind T as ConsoleRenderable
+    RenderSystem_ConsoleRenderable_ -- ConsoleRenderable
+
+    ConsoleGameEngine --|> GameEngine
+    ConsoleGameEngine -- RenderSystem_ConsoleRenderable_
+
+
     namespace GameObject{
         class Player{
             <<interface>>
@@ -149,8 +177,7 @@ classDiagram
             * bool Check(LudoActionable)
         }
         class LudoActionable{
-            # int power
-            + LudoActionable(power)
+            - int power
         }
         class SingleTotemActionable{
             - Totem bindedTotem
@@ -169,6 +196,7 @@ classDiagram
             +Roll()
         }
     }
+    LudoGameScene -- ISceneManager
     SingleTotemActionable <|-- LudoTotemStart
     SingleTotemActionable <|-- LudoTotemMove
     Actionable <|-- LudoActionable
@@ -199,13 +227,25 @@ classDiagram
         }
 
         class Cell{
+            + CellType type : readonly
+            - List~Totem~ Occupants
+            + AddTotem(Totem)
+            + KickTotem(Totem)
+            + GetOwnership()
+        }
 
+        class CellType{
+            <<enumeration>>
+            Normal
+            Safe
         }
 
         class Totem{
-            + mathvector position
-            + mathvector homePosition
+            + mathvector position : public get
+            + mathvector homePosition : public get
             - List~int~ path
+            + AdvanceOnce()
+            + GoHome()
         }
 
     }
@@ -217,7 +257,12 @@ classDiagram
 
     Totem -- LudoTotemMoveTogether
     Totem -- SingleTotemActionable
+
+    Totem -- Cell
+    Totem --|> ConsoleRenderable
+    Board --|> ConsoleRenderable
     
+
 
 
 
