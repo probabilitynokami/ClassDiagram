@@ -139,6 +139,7 @@ classDiagram
     ConsoleGameEngine -- RenderSystem_ConsoleRenderable_
 
 
+
     namespace GameObject{
         class Player{
             <<interface>>
@@ -147,14 +148,15 @@ classDiagram
         class PlayerWithAction{
             <<interface>>
             + ID : readonly
-            + Actionable GetActionable()
+            + IActionable GetActionable()
         }
-        class Actionable{
+        class IActionable{
+            <<interface>>
             + Step()
         }
     }
     Player <|-- PlayerWithAction
-    PlayerWithAction -- Actionable
+    PlayerWithAction -- IActionable
 
     namespace LudoGame{
         class IContextManager_LudoContext_{
@@ -162,8 +164,10 @@ classDiagram
         }
 
         class LudoContext{   
-            + List~LudoPlayer~ players
+            + List~PlayerWithAction~ players
             + Board board
+            - Dictionary~ Player,List ~Totem~ ~ _playerTotem
+            + List~Totem~ GetTotems(Player)
         }
 
         class LudoGameScene{
@@ -174,7 +178,10 @@ classDiagram
 
         class LudoRule{
             - IContextManager _contextManager
-            * bool Check(LudoActionable)
+            - Func<Board,bool> _ruleSet
+            + bool Check(IActionable)
+            + bool statusCheck()
+            + void RegisterRule(Func~Board,bool~)
         }
         class LudoActionable{
             - int power
@@ -192,17 +199,15 @@ classDiagram
             + void Bind(Totem, Totem)
         }
 
-        class LudoDice{
-            +Roll()
-        }
+
     }
     LudoGameScene -- ISceneManager
     SingleTotemActionable <|-- LudoTotemStart
     SingleTotemActionable <|-- LudoTotemMove
-    Actionable <|-- LudoActionable
+    IActionable <|-- LudoActionable
     LudoActionable <|-- SingleTotemActionable
     LudoActionable <|-- LudoTotemMoveTogether
-    LudoRule -- LudoActionable
+    LudoRule -- IActionable
     LudoGameScene -- LudoRule
 
     IScene <|-- LudoGameScene
@@ -214,9 +219,6 @@ classDiagram
     
 
     namespace LudoObjects{
-        class LudoPlayer{
-            List~Totem~ totems
-        }
 
 
 
@@ -244,24 +246,44 @@ classDiagram
             + mathvector position : public get
             + mathvector homePosition : public get
             - List~int~ path
+            + IPlayer Owner : readonly
             + AdvanceOnce()
             + GoHome()
         }
-
+        class LudoDice{
+            +GetLastRoll()
+            +Roll()
+        }
     }
     Cell --* Board
-    Totem --* LudoPlayer
-    PlayerWithAction <|-- LudoPlayer
+    Cell -- CellType
     LudoContext *-- Board
-    LudoContext *-- LudoPlayer 
+    LudoContext *-- PlayerWithAction 
 
     Totem -- LudoTotemMoveTogether
     Totem -- SingleTotemActionable
 
     Totem -- Cell
-    Totem --|> ConsoleRenderable
-    Board --|> ConsoleRenderable
-    
+
+    namespace LudoObjectsRendering{
+        class TotemRendering{
+            - Totem totem
+        }
+        class BoardRendering{
+            - Board board
+        }
+        class LudoDiceRendering{
+            - LudoDice dice
+        }
+    }
+    TotemRendering *-- Totem
+    BoardRendering *-- Board
+    LudoDiceRendering *-- LudoDice
+    BoardRendering --|> ConsoleRenderable
+    TotemRendering --|> ConsoleRenderable
+    LudoDiceRendering --|> ConsoleRenderable
+
+
 
 
 
