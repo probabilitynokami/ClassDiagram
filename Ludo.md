@@ -15,7 +15,7 @@ classDiagram
         }
 
         class GameEngine{
-            # Stack~IScene~ _sceneQueue
+            # Stack~IScene~ _sceneStack
             + void Run()
             # void Loop()
             # void Render()
@@ -260,25 +260,42 @@ sequenceDiagram
 The GameFramework namespace contains the classes to manage the game. It contains system for the game loop management, scene management, scene context, and render system.
 
 #### GameEngine Class
-The GameEngine class defines the way how the game is structured. Typically, implementation of the Run() method will call Loop() method over and over using a loop inside Run() like shown in the snippet below. 
+The GameEngine class defines the way how the game is structured.
+
+##### Run() and Loop()
+Typically, implementation of the Run() method will run a setup code for the game and ten will call Loop() method which could run indefinitely.
 
 ```c#
 public void Run(){
-
     // code to setup some things...
-
-    while(true){
-        this.CommitScene() // Read ISceneManager interface
-
-        this.Loop();
-
-        this.Render(); // this can be setup on a thread
-    }
-    
+    this.Loop();
     // code to handle exits...
 }
 ```
+
+The following snippet is the expected implementation of Loop()
+```c#
+protected void Loop(){
+    while(True){
+        this.CommitScene(); // read ISceneManager
+        this.GetCurrentScene().Update();
+        this.Render();
+    }
+}
+```
 For game with physics, the time elapsed between the Loop call can be an important information. 
+In this case, the time elapsed could be handled as an internal state of each scene, that is, each scene can measure the time difference by itself every time the Update() method is called.
+If such methode doesn't fancy you, you can always derive the GameEngine class and implement a Loop() method with delta time.
 Sometimes the time elapsed is passed as argument to the Loop method. 
 
-The Render() method could also be called inside Run(), but you can also made it run on a thread.
+##### Render()
+The Render() method is for rendering the scene into a render media. 
+Its implementation should iterate the static member Renderables of the RenderSystem class and call their Draw() method.
+The Render() method could be called inside the Loop() method like the code snippet above, or it could also run inside a thread.
+```c#
+protected void Render(){
+    foreach(IRenderable obj in RenderSystem<ConsoleRenderable>.Renderables){
+        obj.Draw();
+    }
+}
+```
