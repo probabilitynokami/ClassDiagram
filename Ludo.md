@@ -304,4 +304,39 @@ A scene could be the main game, the menu, the pause menu, credit, and etc.
 Each scene must implement Update() method which would be called in the GameEngine's Loop.
 
 #### ISceneManager interface
+This is an interface to enable scene management.
+Each class that implement this interface must have a container for IScenes and SceneManagementCommand, and should pass its own reference to each IScene inside of that class.
+The methods of this interface will manipulate the IScene's container.
+This enable each IScene to control the flow of the program by providing a restricted interface to the GameEngine.
+
+##### Staging methods
+To make sure modification to IScene's container happen not while a scene's Update() method is running, the modification should be staged first and then applied at once in CommitScene() method.
+This staging is done by pushing into a the SceneManagementCommand's container.
+Below is an implementation example of the staging and commit.
+```c#
+public void StageSceneExit(){
+    // using queue as command container
+    this.sceneCommand.Enqueue(SceneManagementCommand.EXIT);
+}
+public void StageSceneInsert(IScene scene){
+    this.sceneCommand.Enqueue(SceneManagementCommand.INSERT);
+    // using queue to save staged scene, different from IScene container
+    this.stagedScene.Enqueue(scene);
+}
+public void CommitScene(){
+    while(this.sceneCommand.Count > 0){
+        switch(this.sceneCommand.Peek()){
+            case SceneManagementCommand.EXIT:
+                this.sceneStack.Pop();
+                break;
+            case SceneManagementCommand.INSERT:
+                this.sceneStack.Push(
+                    this.stagedScene.Dequeue()
+                );
+                break;
+        }
+        this.sceneCommand.Dequeue();
+    }
+}
+```
 
