@@ -299,5 +299,9 @@ protected void Render(){
 }
 ```
 #### IScene interface
+IScene is the interface for each scene in a game.
+A scene could be the main game, the menu, the pause menu, credit, and etc.
+Each scene must implement Update() method which would be called in the GameEngine's Loop.
+
 #### ISceneManager interface
 
