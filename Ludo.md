@@ -31,11 +31,6 @@ classDiagram
             + void Update()
         }
 
-        class IContextManager_T_{
-            <<interface>>
-            + T GetContext()
-        }
-
         class IRenderable{
             <<interface>>
             + void Draw()
@@ -72,6 +67,12 @@ classDiagram
             <<interface>>
             + Step()
         }
+
+        class IContextManager_T_{
+            <<interface>>
+            + T GetContext()
+        }
+
     }
 
     namespace LudoGame{
