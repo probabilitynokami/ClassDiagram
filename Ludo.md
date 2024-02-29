@@ -13,9 +13,15 @@ classDiagram
             + void CommitScene()
             + void GetCurrentScene()
         }
-
+        class SceneManagementCommand{
+            <<enumeration>>
+            INSERT
+            EXIT
+        }
         class GameEngine{
             # Stack~IScene~ _sceneStack
+            # Queue~SceneManagementCommand~ sceneCommand
+            # Queue~IScene~ stagedScene
             + void Run()
             # void Loop()
             # void Render()
