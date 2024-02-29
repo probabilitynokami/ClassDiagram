@@ -215,7 +215,11 @@ classDiagram
     LudoGameScene -- LudoContext
     LudoGameScene --|> IContextManager_LudoContext_
 
-
+    namespace Utility{
+        class Path{
+            + List~int~ Path
+        }
+    }
     
 
     namespace LudoObjects{
@@ -224,7 +228,7 @@ classDiagram
 
         class Board{
             +List~Cell~ Cells : readonly
-            +List~List~int~~ Paths : readonly
+            +List~Path~ Paths : readonly
 
         }
 
