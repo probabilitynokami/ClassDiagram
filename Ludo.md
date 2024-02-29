@@ -49,15 +49,6 @@ classDiagram
         }
     }
 
-    ISceneManager -- IScene
-    GameEngine --|> ISceneManager
-    GameEngine o-- IScene
-    ConsoleRenderable --|> IRenderable
-    RenderSystem_ConsoleRenderable_ ..|> RenderSystem_T_ : bind T as ConsoleRenderable
-    RenderSystem_ConsoleRenderable_ -- ConsoleRenderable
-
-    ConsoleGameEngine --|> GameEngine
-    ConsoleGameEngine -- RenderSystem_ConsoleRenderable_
 
 
 
@@ -76,8 +67,6 @@ classDiagram
             + Step()
         }
     }
-    Player <|-- PlayerWithAction
-    PlayerWithAction -- IActionable
 
     namespace LudoGame{
         class IContextManager_LudoContext_{
@@ -122,19 +111,7 @@ classDiagram
 
 
     }
-    LudoGameScene -- ISceneManager
-    SingleTotemActionable <|-- LudoTotemStart
-    SingleTotemActionable <|-- LudoTotemMove
-    IActionable <|-- LudoActionable
-    LudoActionable <|-- SingleTotemActionable
-    LudoActionable <|-- LudoTotemMoveTogether
-    LudoRule -- IActionable
-    LudoGameScene -- LudoRule
 
-    IScene <|-- LudoGameScene
-    IContextManager_T_ <|.. IContextManager_LudoContext_ : bind T as LudoContext
-    LudoGameScene -- LudoContext
-    LudoGameScene --|> IContextManager_LudoContext_
 
     namespace Utility{
         class Path{
@@ -180,15 +157,6 @@ classDiagram
             +Roll()
         }
     }
-    Cell --* Board
-    Cell -- CellType
-    LudoContext *-- Board
-    LudoContext *-- PlayerWithAction 
-
-    Totem -- LudoTotemMoveTogether
-    Totem -- SingleTotemActionable
-
-    Totem -- Cell
 
     namespace LudoObjectsRendering{
         class TotemRendering{
@@ -208,6 +176,45 @@ classDiagram
     TotemRendering --|> ConsoleRenderable
     LudoDiceRendering --|> ConsoleRenderable
 
+
+    ISceneManager -- IScene
+    GameEngine --|> ISceneManager
+    GameEngine o-- IScene
+    ConsoleRenderable --|> IRenderable
+    RenderSystem_ConsoleRenderable_ ..|> RenderSystem_T_ : bind T as ConsoleRenderable
+    RenderSystem_ConsoleRenderable_ -- ConsoleRenderable
+
+    ConsoleGameEngine --|> GameEngine
+    ConsoleGameEngine -- RenderSystem_ConsoleRenderable_
+
+
+    Cell --* Board
+    Cell -- CellType
+    LudoContext *-- Board
+    LudoContext *-- PlayerWithAction 
+
+    Totem -- LudoTotemMoveTogether
+    Totem -- SingleTotemActionable
+
+    Totem -- Cell
+
+    IScene <|-- LudoGameScene
+    IContextManager_T_ <|.. IContextManager_LudoContext_ : bind T as LudoContext
+    LudoGameScene -- LudoContext
+    LudoGameScene --|> IContextManager_LudoContext_
+
+
+    LudoGameScene -- ISceneManager
+    SingleTotemActionable <|-- LudoTotemStart
+    SingleTotemActionable <|-- LudoTotemMove
+    IActionable <|-- LudoActionable
+    LudoActionable <|-- SingleTotemActionable
+    LudoActionable <|-- LudoTotemMoveTogether
+    LudoRule -- IActionable
+    LudoGameScene -- LudoRule
+
+    Player <|-- PlayerWithAction
+    PlayerWithAction -- IActionable
 ```
 
 ## Rough Sequence Diagram
