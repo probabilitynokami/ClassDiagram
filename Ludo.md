@@ -275,12 +275,15 @@ sequenceDiagram
 ## Design Documentation
 
 ### GameFramework
+
 The GameFramework namespace contains the classes to manage the game. It contains system for the game loop management, scene management, scene context, and render system.
 
 #### GameEngine Class
+
 The GameEngine class defines the way how the game is structured.
 
 ##### Run() and Loop()
+
 Typically, implementation of the Run() method will run a setup code for the game and ten will call Loop() method which could run indefinitely.
 
 ```c#
@@ -292,6 +295,7 @@ public void Run(){
 ```
 
 The following snippet is the expected implementation of Loop()
+
 ```c#
 protected void Loop(){
     while(True){
@@ -301,14 +305,17 @@ protected void Loop(){
     }
 }
 ```
+
 For game with physics, the time elapsed between the Loop call can be an important information. 
 In this case, the time elapsed could be handled as an internal state of each scene, that is, each scene can measure the time difference by itself every time the Update() method is called.
 If such methode doesn't fancy you, you can always derive the GameEngine class and implement a Loop() method with delta time.
 
 ##### Render()
+
 The Render() method is for rendering the scene into a render media. 
 Its implementation should iterate the static member Renderables of the RenderSystem class and call their Draw() method.
 The Render() method could be called inside the Loop() method like the code snippet above, or it could also run inside a thread.
+
 ```c#
 protected void Render(){
     foreach(IRenderable obj in RenderSystem<ConsoleRenderable>.Renderables){
@@ -316,21 +323,26 @@ protected void Render(){
     }
 }
 ```
+
 #### IScene interface
+
 IScene is the interface for each scene in a game.
 A scene could be the main game, the menu, the pause menu, credit, and etc.
 Each scene must implement Update() method which would be called in the GameEngine's Loop.
 
 #### ISceneManager interface
+
 This is an interface to enable scene management.
 Each class that implement this interface must have a container for IScenes and SceneManagementCommand, and should pass its own reference to each IScene inside of that class.
 The methods of this interface will manipulate the IScene's container.
 This enable each IScene to control the flow of the program by providing a restricted interface to the GameEngine.
 
 ##### Staging methods
+
 To make sure modification to IScene's container happen not while a scene's Update() method is running, the modification should be staged first and then applied at once in CommitScene() method.
 This staging is done by pushing into a the SceneManagementCommand's container.
 Below is an implementation example of the staging and commit.
+
 ```c#
 public void StageSceneExit(){
     // using queue as command container
@@ -359,6 +371,7 @@ public void CommitScene(){
 ```
 
 #### Rendering system
+
 This design of the rendering system in this framework can be adapted to specific rendering device.
 To do that, you must create a class for the rendering device.
 In the class diagram, rendering on console is provided as an example.
