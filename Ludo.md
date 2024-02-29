@@ -286,7 +286,6 @@ protected void Loop(){
 For game with physics, the time elapsed between the Loop call can be an important information. 
 In this case, the time elapsed could be handled as an internal state of each scene, that is, each scene can measure the time difference by itself every time the Update() method is called.
 If such methode doesn't fancy you, you can always derive the GameEngine class and implement a Loop() method with delta time.
-Sometimes the time elapsed is passed as argument to the Loop method. 
 
 ##### Render()
 The Render() method is for rendering the scene into a render media. 
@@ -299,3 +298,6 @@ protected void Render(){
     }
 }
 ```
+#### IScene interface
+#### ISceneManager interface
+
