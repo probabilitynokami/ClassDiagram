@@ -208,12 +208,6 @@ classDiagram
     TotemRendering --|> ConsoleRenderable
     LudoDiceRendering --|> ConsoleRenderable
 
-
-
-
-
-
-
 ```
 
 ## Rough Sequence Diagram
@@ -259,3 +253,32 @@ sequenceDiagram
     deactivate GameEngine
 
 ```
+
+## Design Documentation
+
+### GameFramework
+The GameFramework namespace contains the classes to manage the game. It contains system for the game loop management, scene management, scene context, and render system.
+
+#### GameEngine Class
+The GameEngine class defines the way how the game is structured. Typically, implementation of the Run() method will call Loop() method over and over using a loop inside Run() like shown in the snippet below. 
+
+```c#
+public void Run(){
+
+    // code to setup some things...
+
+    while(true){
+        this.CommitScene() // Read ISceneManager interface
+
+        this.Loop();
+
+        this.Render(); // this can be setup on a thread
+    }
+    
+    // code to handle exits...
+}
+```
+For game with physics, the time elapsed between the Loop call can be an important information. 
+Sometimes the time elapsed is passed as argument to the Loop method. 
+
+The Render() method could also be called inside Run(), but you can also made it run on a thread.
