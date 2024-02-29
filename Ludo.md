@@ -169,6 +169,8 @@ classDiagram
             - LudoDice dice
         }
     }
+
+    %% LudoObjectsRendering relationships
     TotemRendering *-- Totem
     BoardRendering *-- Board
     LudoDiceRendering *-- LudoDice
@@ -176,7 +178,7 @@ classDiagram
     TotemRendering --|> ConsoleRenderable
     LudoDiceRendering --|> ConsoleRenderable
 
-
+    %% GameFramework relationships
     ISceneManager -- IScene
     GameEngine --|> ISceneManager
     GameEngine o-- IScene
@@ -187,7 +189,7 @@ classDiagram
     ConsoleGameEngine --|> GameEngine
     ConsoleGameEngine -- RenderSystem_ConsoleRenderable_
 
-
+    %% LudoObjects relationship
     Cell --* Board
     Cell -- CellType
     LudoContext *-- Board
@@ -198,6 +200,7 @@ classDiagram
 
     Totem -- Cell
 
+    %% LudoGame relationship
     IScene <|-- LudoGameScene
     IContextManager_T_ <|.. IContextManager_LudoContext_ : bind T as LudoContext
     LudoGameScene -- LudoContext
@@ -213,6 +216,7 @@ classDiagram
     LudoRule -- IActionable
     LudoGameScene -- LudoRule
 
+    %% GameObjects relationships
     Player <|-- PlayerWithAction
     PlayerWithAction -- IActionable
 ```
