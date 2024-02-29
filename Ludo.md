@@ -357,3 +357,19 @@ public void CommitScene(){
 }
 ```
 
+#### Rendering system
+This design of the rendering system in this framework can be adapted to specific rendering device.
+To do that, you must create a class for the rendering device.
+In the class diagram, rendering on console is provided as an example.
+When using console as rendering device, you can create a ConsoleRenderable class that implements the IDrawable interface.
+Later, if an object want to be made renderable on console, it can simply inherit from ConsoleRenderable.
+Additionally, in the constructor of ConsoleRenderable, or any class that implements IRenderable, must register themself to the RenderSystem class like shown in code below.
+This way, all instances of ConsoleRenderable can be rendered like in GameEngine [Render() method](#render)
+
+```c#
+public ConsoleRenderable(){
+    RenderSystem<ConsoleRenderable>.RegisterRenderable(this);
+}
+```
+
+To decouple GameEngine class from the rendering device, you should derive the GameEngine class to a specific rendering device to override the Render() method. So, to use console as rendering device, a ConsoleGameEngine class like in the diagram should be made.
