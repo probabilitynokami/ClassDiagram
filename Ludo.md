@@ -228,6 +228,8 @@ classDiagram
     PlayerWithAction -- IActionable
 ```
 
+---
+
 ## Rough Sequence Diagram
 
 ```mermaid
@@ -271,6 +273,8 @@ sequenceDiagram
     deactivate GameEngine
 
 ```
+
+---
 
 ## Design Documentation
 
@@ -391,3 +395,51 @@ So, to use console as rendering device, a ConsoleGameEngine class like in the di
 Another way to do it to set the GameEngine class to be generic.
 But, I don't find that elegant.
 It's up to you how you will implmenent this.
+
+### GameObject
+
+This namespace contains the common objects that may exist in a game such as players, actions, and context manager.
+
+#### Player
+
+The player interface is simply tells the implementers to have ID property.
+It could only be useful only after being realized to a class or another interface with more method like PlayerWithAction.
+With this interface, we can pass realizations of Player to objects that only needs the ID of an instance of Player, without them accidentaly call methods they shouldn't call.
+
+#### IActionable and PlayerWithAction
+
+IActionable is an interface in which all action performed in a game should implement.
+You can see that PlayerWithAction has a method that produce an IActionable.
+It provides a means to pass around the action a player took to the game logic which is handled by the scene.
+Furthermore, since every action can implement Step() method freely, it gives out freedom to create any action possible in the game.
+
+#### IContextManager\<T>
+
+IContextManager is an interface which every scene that wants the game context to be passed through by passing itself to an object but doesn't want the said object to access anything more that the game context.
+It is basically similar to ISceneManager in some sense.
+
+```c#
+class A : IContextManager<GameContext>{
+    private GameContext _myContext;
+    private B otherObject;
+    public A(){
+        otherObject = new(this);
+    }
+    public GameContext GetContext(){
+        return _myContext;
+    }
+    public void MethodIDontWantBToAccess(){
+        // shady stuff
+    }
+}
+class B{
+    IContextManager<GameContext> context_manager;
+    public B(IContextManager<GameContext> cm){
+        context_manager = cm;
+    }
+    public void DoingBStuff(){
+        context_manager.GetContext(); // legal
+        // context_manager.MethodIDontWantBToAccess(); // cant do
+    }
+}
+```
