@@ -116,6 +116,10 @@ classDiagram
             + void Bind(Totem, Totem)
         }
 
+        class LudoPlayer{
+            - IContextManager _contextManager
+        }
+
 
     }
 
@@ -206,6 +210,8 @@ classDiagram
     Totem -- SingleTotemActionable
 
     Totem -- Cell
+
+    LudoPlayer --|> PlayerWithAction
 
     %% LudoGame relationship
     IScene <|-- LudoGameScene
@@ -481,3 +487,49 @@ Just a simple dice.
 
 This namespace contains wrapper classes that wraps Ludo game objects and add a method to draw them.
 Every class in this namespace basically take a reference to Ludo game objects that needed to be drawn.
+
+### LudoGame
+
+This namespace contains the scene for a LudoGame and everythings that the scene need like context, rule, and actionables.
+
+#### LudoGameScene
+
+This class is an implementation of the interface IScene.
+That means we need to create an instance of this class and then stage it to be inserted in the game engine.
+
+To control the game engine, this class used the ISceneManager interface by setting that interface to refer to the game engine. The constructor of this class should accept the game engine reference or pass "this" if the class instance is created inside the game engine class.
+
+Another interface this class implements is the IContextManager interface.
+With this, you can pass this scene's "this" reference to each member of this scene and those member can access the context of the scene.
+
+#### LudoContext
+
+LudoContext is a data class that stores every objects in the game of Ludo, which are basically players and the board.
+
+#### LudoRule
+
+This is the class that will check if a board is valid or not.
+It's a member of LudoGameScene, and the scene's reference is passed into it as ContextManager.
+
+You can register rules to this class via Func delegate that accept the current status of the Board as parameter.
+
+#### LudoActionables
+
+LudoActionables are the actions that can be taken on a Ludo game.
+The power member here should be filled with the value of the dice roll.
+Ludo player should return LudoActionable (with IActionable interface) for every action it want to take.
+These action will be simulated in the Update() method of the scene, checked by the rule, and if it's valid, will be applied to the board.
+
+Before returning an actionable, the player should use Bind() method to bind their totem to the action they will take (the cool phrase for this is adding the totem into the actionable closure).
+For example if the player want to move Totem A, then its GetActionable() method should be like this
+
+```c#
+public IActionable GetActionable(){
+    LudoTotemStart actionable = new();
+    var totems = this._contextManager.GetContext().GetTotem(this)
+    actionable.Bind(totems[0])
+    return actionable;
+}
+```
+
+These actionables Step() method should implement how the binded reference will evolve as the action take places.
