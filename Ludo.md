@@ -447,6 +447,6 @@ class B{
 
 ### LudoObjects
 
-![alt](assets\ludoboardnoted.jpg)
+![alt](./assets/ludoboardnoted.jpg)
 
 This namespace contains objects that are used specifically in the game of Ludo.
