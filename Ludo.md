@@ -476,3 +476,8 @@ The path and owner can be populated by inserting reference to members of an inst
 #### LudoDice
 
 Just a simple dice.
+
+### LudoObjectsRendering
+
+This namespace contains wrapper classes that wraps Ludo game objects and add a method to draw them.
+Every class in this namespace basically take a reference to Ludo game objects that needed to be drawn.
