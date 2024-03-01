@@ -417,6 +417,7 @@ Furthermore, since every action can implement Step() method freely, it gives out
 
 IContextManager is an interface which every scene that wants the game context to be passed through by passing itself to an object but doesn't want the said object to access anything more that the game context.
 It is basically similar to ISceneManager in some sense.
+Look at the following demo:
 
 ```c#
 class A : IContextManager<GameContext>{
