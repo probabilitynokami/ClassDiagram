@@ -386,4 +386,8 @@ public ConsoleRenderable(){
 }
 ```
 
-To decouple GameEngine class from the rendering device, you should derive the GameEngine class to a specific rendering device to override the Render() method. So, to use console as rendering device, a ConsoleGameEngine class like in the diagram should be made.
+To decouple GameEngine class from the rendering device, you should derive the GameEngine class to a specific rendering device to override the Render() method.
+So, to use console as rendering device, a ConsoleGameEngine class like in the diagram should be made.
+Another way to do it to set the GameEngine class to be generic.
+But, I don't find that elegant.
+It's up to you how you will implmenent this.
