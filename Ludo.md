@@ -415,8 +415,8 @@ Furthermore, since every action can implement Step() method freely, it gives out
 
 #### IContextManager\<T>
 
-IContextManager is an interface which every scene that wants the game context to be passed through by passing itself to an object but doesn't want the said object to access anything more that the game context.
-It is basically similar to ISceneManager in some sense.
+IContextManager is an interface which every scene that wants its game context to be passed through its members by passing reference to itself in them but doesn't want them to access anything more that the game context.
+It is basically similar to ISceneManager.
 Look at the following demo:
 
 ```c#
@@ -447,6 +447,32 @@ class B{
 
 ### LudoObjects
 
-![alt](./assets/ludoboardnoted.jpg)
-
 This namespace contains objects that are used specifically in the game of Ludo.
+
+![alt](./assets/ludoboardnoted.jpg "A board of Ludo Game")
+
+#### Cell and CellType
+
+The Cell class describe each cell (the place that totems step on) that exist on a Ludo game board.
+Each cell has its own type like safe or normal.
+Safe type cells are the cells where Totems cannot eat each other.
+Normal cells are where they can eat each other (PvP Enabled).
+Specifying what each type does should be handled by the logic, or for a more elegant solution using the LudoRule class.
+
+#### Board
+
+Board contains all the cell and path to navigate the board.
+The path is a list of integer which tells which cell is the next cell after the current cell a totem is in.
+The board will store all paths for each possible player in the board.
+So, if you want to implement a 27 player Ludo, you should prepare 27 paths to walk through the board.
+In my opinion, the best way to populate this class is through building it from a config file.
+
+#### Totem
+
+In a classic Ludo game, each player have 4 totem.
+Totem store the path that it would take, and whose its owner.
+The path and owner can be populated by inserting reference to members of an instance of board.
+
+#### LudoDice
+
+Just a simple dice.
