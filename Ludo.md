@@ -96,7 +96,7 @@ classDiagram
 
         class LudoRule{
             - IContextManager _contextManager
-            - Func<Board,bool> _ruleSet
+            - Func~Board,bool~ _ruleSet
             + bool Check(IActionable)
             + bool statusCheck()
             + void RegisterRule(Func~Board,bool~)
