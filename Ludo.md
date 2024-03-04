@@ -42,7 +42,7 @@ classDiagram
         class RenderSystem_T_{
             <<static>>
             +List~T~ Renderables
-            +RegisterRenderable(T)
+            +void RegisterRenderable(T)
         }
         class RenderSystem_ConsoleRenderable_{
         }
@@ -61,7 +61,6 @@ classDiagram
         }
         class IPlayerWithAction{
             <<interface>>
-            + ID : readonly
             + IActionable GetActionable()
         }
         class IActionable{
@@ -146,9 +145,9 @@ classDiagram
         class Cell{
             + CellType type : readonly
             - List~Totem~ Occupants
-            + AddTotem(Totem)
-            + KickTotem(Totem)
-            + GetOwnership()
+            + void AddTotem(Totem)
+            + bool KickTotem(Totem)
+            + IPlayer GetOwnership()
         }
 
         class CellType{
@@ -162,12 +161,12 @@ classDiagram
             + mathvector homePosition : public get
             - List~int~ path
             + IPlayer Owner : readonly
-            + AdvanceOnce()
-            + GoHome()
+            + void AdvanceOnce()
+            + void GoHome()
         }
         class LudoDice{
-            +GetLastRoll()
-            +Roll()
+            +int GetLastRoll()
+            +int Roll()
         }
     }
 
