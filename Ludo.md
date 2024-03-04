@@ -83,6 +83,7 @@ classDiagram
         class LudoContext{   
             + List~PlayerWithAction~ players
             + Board board
+            + LudoDice dice
             - Dictionary~ Player,List ~Totem~ ~ _playerTotem
             + List~Totem~ GetTotems(Player)
         }
@@ -204,7 +205,9 @@ classDiagram
     Cell "1..*" --* "1" Board
     Cell "1" -- "1" CellType
     LudoContext "1" *-- "1" Board
+    LudoContext "1" *-- "1..*" LudoDice
     LudoContext "1" *-- "1..*" PlayerWithAction 
+    Board "1" *-- "1..*" Path
 
     Totem "2" -- "1" LudoTotemMoveTogether
     Totem "1" -- "1" SingleTotemActionable
