@@ -182,56 +182,56 @@ classDiagram
     }
 
     %% LudoObjectsRendering relationships
-    TotemRendering *-- Totem
-    BoardRendering *-- Board
-    LudoDiceRendering *-- LudoDice
+    TotemRendering "1" o-- "1" Totem
+    BoardRendering "1" o-- "1" Board
+    LudoDiceRendering "1" o-- "1" LudoDice
     BoardRendering --|> ConsoleRenderable
     TotemRendering --|> ConsoleRenderable
     LudoDiceRendering --|> ConsoleRenderable
 
     %% GameFramework relationships
-    ISceneManager -- IScene
+    ISceneManager "1" -- "1" IScene
     GameEngine --|> ISceneManager
-    GameEngine o-- IScene
+    GameEngine "1" o-- "0..*" IScene
     ConsoleRenderable --|> IRenderable
     RenderSystem_ConsoleRenderable_ ..|> RenderSystem_T_ : bind T as ConsoleRenderable
-    RenderSystem_ConsoleRenderable_ -- ConsoleRenderable
+    RenderSystem_ConsoleRenderable_ "1" -- "0..*" ConsoleRenderable
 
     ConsoleGameEngine --|> GameEngine
-    ConsoleGameEngine -- RenderSystem_ConsoleRenderable_
+    ConsoleGameEngine "1" -- "1" RenderSystem_ConsoleRenderable_
 
     %% LudoObjects relationship
-    Cell --* Board
-    Cell -- CellType
-    LudoContext *-- Board
-    LudoContext *-- PlayerWithAction 
+    Cell "1..*" --* "1" Board
+    Cell "1" -- "1" CellType
+    LudoContext "1" *-- "1" Board
+    LudoContext "1" *-- "1..*" PlayerWithAction 
 
-    Totem -- LudoTotemMoveTogether
-    Totem -- SingleTotemActionable
+    Totem "2" -- "1" LudoTotemMoveTogether
+    Totem "1" -- "1" SingleTotemActionable
 
-    Totem -- Cell
+    Totem "0..*" -- "1" Cell
 
     LudoPlayer --|> PlayerWithAction
 
     %% LudoGame relationship
     IScene <|-- LudoGameScene
     IContextManager_T_ <|.. IContextManager_LudoContext_ : bind T as LudoContext
-    LudoGameScene -- LudoContext
+    LudoGameScene "1" -- "1" LudoContext
     LudoGameScene --|> IContextManager_LudoContext_
 
 
-    LudoGameScene -- ISceneManager
+    LudoGameScene "1" -- "1" ISceneManager
     SingleTotemActionable <|-- LudoTotemStart
     SingleTotemActionable <|-- LudoTotemMove
     IActionable <|-- LudoActionable
     LudoActionable <|-- SingleTotemActionable
     LudoActionable <|-- LudoTotemMoveTogether
-    LudoRule -- IActionable
-    LudoGameScene -- LudoRule
+    LudoRule "1" -- "1" IActionable
+    LudoGameScene "1" -- "1" LudoRule
 
     %% GameObjects relationships
     Player <|-- PlayerWithAction
-    PlayerWithAction -- IActionable
+    PlayerWithAction "1" -- "1" IActionable
 ```
 
 ---
