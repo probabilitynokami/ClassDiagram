@@ -23,6 +23,7 @@ classDiagram
             # Queue~SceneManagementCommand~ sceneCommand
             # Queue~IScene~ stagedScene
             + void Run()
+            + void Setup()
             # void Loop()
             # void Render()
         }
