@@ -89,9 +89,9 @@ classDiagram
         }
 
         class LudoGameScene{
-            - ISceneManager _sceneManager
-            - LudoContext _context
-            - void NextTurn()
+            # ISceneManager _sceneManager
+            # LudoContext _context
+            # void NextTurn()
         }
 
         class LudoRule{
@@ -524,7 +524,7 @@ The power member here should be filled with the value of the dice roll.
 Ludo player should return LudoActionable (with IActionable interface) for every action it want to take.
 These action will be simulated in the Update() method of the scene, checked by the rule, and if it's valid, will be applied to the board.
 
-Before returning an actionable, the player should use Bind() method to bind their totem to the action they will take (the cool phrase for this is adding the totem into the actionable closure).
+Before returning an actionable, the player should use Bind() method to bind their totem to the action they will take (closure yey!!).
 For example if the player want to move Totem A, then its GetActionable() method should be like this
 
 ```c#
