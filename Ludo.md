@@ -197,6 +197,7 @@ classDiagram
     ConsoleRenderable --|> IRenderable
     RenderSystem_ConsoleRenderable_ ..|> RenderSystem_T_ : bind T as ConsoleRenderable
     RenderSystem_ConsoleRenderable_ "1" -- "0..*" ConsoleRenderable
+    GameEngine "1" -- "0..*" SceneManagementCommand
 
     ConsoleGameEngine --|> GameEngine
     ConsoleGameEngine "1" -- "1" RenderSystem_ConsoleRenderable_
