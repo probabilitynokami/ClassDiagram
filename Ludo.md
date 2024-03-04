@@ -55,11 +55,11 @@ classDiagram
 
 
     namespace GameObject{
-        class Player{
+        class IPlayer{
             <<interface>>
             + ID : readonly
         }
-        class PlayerWithAction{
+        class IPlayerWithAction{
             <<interface>>
             + ID : readonly
             + IActionable GetActionable()
@@ -82,11 +82,11 @@ classDiagram
         }
 
         class LudoContext{   
-            + List~PlayerWithAction~ players
+            + List~IPlayerWithAction~ players
             + Board board
             + LudoDice dice
-            - Dictionary~ Player,List ~Totem~ ~ _playerTotem
-            + List~Totem~ GetTotems(Player)
+            - Dictionary~ IPlayer,List ~Totem~ ~ _playerTotem
+            + List~Totem~ GetTotems(IPlayer)
         }
 
         class LudoGameScene{
@@ -208,7 +208,7 @@ classDiagram
     Cell "1" -- "1" CellType
     LudoContext "1" *-- "1" Board
     LudoContext "1" *-- "1..*" LudoDice
-    LudoContext "1" *-- "1..*" PlayerWithAction 
+    LudoContext "1" *-- "1..*" IPlayerWithAction 
     Board "1" *-- "1..*" Path
 
     Totem "2" -- "1" LudoTotemMoveTogether
@@ -216,7 +216,7 @@ classDiagram
 
     Totem "0..*" -- "1" Cell
 
-    LudoPlayer --|> PlayerWithAction
+    LudoPlayer --|> IPlayerWithAction
 
     %% LudoGame relationship
     IScene <|-- LudoGameScene
@@ -235,8 +235,8 @@ classDiagram
     LudoGameScene "1" -- "1" LudoRule
 
     %% GameObjects relationships
-    Player <|-- PlayerWithAction
-    PlayerWithAction "1" -- "1" IActionable
+    IPlayer <|-- IPlayerWithAction
+    IPlayerWithAction "1" -- "1" IActionable
 ```
 
 ---
