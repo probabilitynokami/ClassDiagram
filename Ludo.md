@@ -95,7 +95,7 @@ classDiagram
         }
 
         class LudoRule{
-            - IContextManager _contextManager
+            - IContextManager~LudoContext~ _contextManager
             - Func~Board,bool~ _ruleSet
             + bool Check(IActionable)
             + bool statusCheck()
